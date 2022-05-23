@@ -22,6 +22,8 @@ public class UserService {
     }
 
     public void addUser(User user) {
+        user.setRole("USER");
+        user.setProvider("LOCAL");
         repository.insert(user);
     }
 

@@ -42,7 +42,7 @@ public class ProductController {
             @RequestParam(name = "brand", required = false) String brand,
             @RequestParam(name = "material", required = false) String material,
             @RequestParam(name = "chainMaterial", required = false) String chainMaterial,
-            @RequestParam(name = "ageOfGold", required = false) String ageOfGold,
+            @RequestParam(name = "purity", required = false) String purity,
             @RequestParam(name = "gender", required = false) String gender,
             @RequestParam(name = "color", required = false) String color,
             @RequestParam(name = "majorType", required = false) String majorType,
@@ -51,7 +51,7 @@ public class ProductController {
         params.put("brand", brand);
         params.put("material", material);
         params.put("chain_material", chainMaterial);
-        params.put("age_of_gold", ageOfGold);
+        params.put("purity", purity);
         params.put("gender", gender);
         params.put("color", color);
         params.put("major_type", majorType);

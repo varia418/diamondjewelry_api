@@ -24,6 +24,8 @@ public class Order {
     private double VATFee;
     @Field("total_cost")
     private double totalCost;
+    @Field("created_at")
+    private String createdAt;
 
     @PersistenceConstructor
     public Order(String userId, List<CartItem> items, String address, double VATFee, double totalCost) {
@@ -78,15 +80,21 @@ public class Order {
         this.totalCost = totalCost;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id='" + id + '\'' +
-                ", userId='" + userId + '\'' +
-                ", items=" + items +
-                ", address='" + address + '\'' +
-                ", VATFee=" + VATFee +
-                ", totalCost=" + totalCost +
-                '}';
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Order(String id, String userId, List<CartItem> items, String address, double VATFee, double totalCost, String createdAt) {
+        this.id = id;
+        this.userId = userId;
+        this.items = items;
+        this.address = address;
+        this.VATFee = VATFee;
+        this.totalCost = totalCost;
+        this.createdAt = createdAt;
     }
 }

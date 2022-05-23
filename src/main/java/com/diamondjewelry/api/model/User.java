@@ -23,6 +23,8 @@ public class User {
     private String password;
     @Field(name = "favorite_products", targetType = FieldType.OBJECT_ID)
     private List<String> favoriteProducts;
+    @Field("role")
+    private String role;
     @Field("provider")
     private String provider;
 
@@ -33,7 +35,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.favoriteProducts = favoriteProducts;
-        this.provider = provider;
     }
 
     public String getId() {
@@ -88,6 +89,14 @@ public class User {
         this.favoriteProducts = favoriteProducts;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getProvider() {
         return provider;
     }
@@ -106,6 +115,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", favoriteProducts=" + favoriteProducts +
+                ", role='" + role + '\'' +
                 ", provider='" + provider + '\'' +
                 '}';
     }
