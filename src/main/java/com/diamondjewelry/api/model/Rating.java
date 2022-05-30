@@ -1,6 +1,7 @@
 package com.diamondjewelry.api.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -16,16 +17,25 @@ public class Rating {
     private float ratingStar;
     @Field("content")
     private String content;
+    @Field("createdAt")
+    private String createdAt;
 
-    public Rating(String userId, String productId, float ratingStar, String content) {
+    @PersistenceConstructor
+    public Rating(String id, String userId, String productId, float ratingStar, String content, String createdAt) {
+        this.id = id;
         this.userId = userId;
         this.productId = productId;
         this.ratingStar = ratingStar;
         this.content = content;
+        this.createdAt = createdAt;
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -60,6 +70,14 @@ public class Rating {
         this.content = content;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "Rating{" +
@@ -68,6 +86,7 @@ public class Rating {
                 ", productId='" + productId + '\'' +
                 ", ratingStar=" + ratingStar +
                 ", content='" + content + '\'' +
+                ", createdAt='" + createdAt + '\'' +
                 '}';
     }
 }

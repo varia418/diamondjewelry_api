@@ -85,13 +85,13 @@ public class ProductController {
         return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/majorType")
-    public ResponseEntity<List<String>> getAllMajorTypes() {
-        return new ResponseEntity<>(service.getAllMajorTypes(), HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.GET, value = "/group")
+    public ResponseEntity<List<String>> getAllGroup() {
+        return new ResponseEntity<>(service.getAllGroups(), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/minorType")
+    @RequestMapping(method = RequestMethod.GET, value = "/type")
     public ResponseEntity<List<String>> getAllMinorTypes() {
-        return new ResponseEntity<>(service.getAllMinorTypes(), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllTypes(), HttpStatus.OK);
     }
 }

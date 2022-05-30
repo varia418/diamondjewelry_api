@@ -17,6 +17,8 @@ public class Product {
     private String description;
     @Field("details")
     private Details details;
+    @Field("group")
+    private String group;
     @Field("image")
     private String image;
     @Field("stock")
@@ -26,20 +28,25 @@ public class Product {
     @Field("created_at")
     private String createdAt;
 
-
-    @PersistenceConstructor
-    public Product(String title, double price, String description, Details details, String image, int stock, int sold) {
+    public Product(String id, String title, double price, String description, Details details, String group, String image, int stock, int sold, String createdAt) {
+        this.id = id;
         this.title = title;
         this.price = price;
         this.description = description;
         this.details = details;
+        this.group = group;
         this.image = image;
         this.stock = stock;
         this.sold = sold;
+        this.createdAt = createdAt;
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -72,6 +79,14 @@ public class Product {
 
     public void setDetails(Details details) {
         this.details = details;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getImage() {
@@ -114,6 +129,7 @@ public class Product {
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", details=" + details +
+                ", group='" + group + '\'' +
                 ", image='" + image + '\'' +
                 ", stock=" + stock +
                 ", sold=" + sold +

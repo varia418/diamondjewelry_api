@@ -17,7 +17,8 @@ public class Contact {
     private String content;
 
     @PersistenceConstructor
-    public Contact(String senderName, String senderEmail, String content) {
+    public Contact(String id, String senderName, String senderEmail, String content) {
+        this.id = id;
         this.senderName = senderName;
         this.senderEmail = senderEmail;
         this.content = content;
@@ -25,6 +26,10 @@ public class Contact {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSenderName() {

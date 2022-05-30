@@ -28,12 +28,18 @@ public class Order {
     private String createdAt;
 
     @PersistenceConstructor
-    public Order(String userId, List<CartItem> items, String address, double VATFee, double totalCost) {
+    public Order(String id, String userId, List<CartItem> items, String address, double VATFee, double totalCost, String createdAt) {
+        this.id = id;
         this.userId = userId;
         this.items = items;
         this.address = address;
         this.VATFee = VATFee;
         this.totalCost = totalCost;
+        this.createdAt = createdAt;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getId() {
@@ -88,13 +94,16 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    public Order(String id, String userId, List<CartItem> items, String address, double VATFee, double totalCost, String createdAt) {
-        this.id = id;
-        this.userId = userId;
-        this.items = items;
-        this.address = address;
-        this.VATFee = VATFee;
-        this.totalCost = totalCost;
-        this.createdAt = createdAt;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", items=" + items +
+                ", address='" + address + '\'' +
+                ", VATFee=" + VATFee +
+                ", totalCost=" + totalCost +
+                ", createdAt='" + createdAt + '\'' +
+                '}';
     }
 }

@@ -24,7 +24,8 @@ public class Cart {
     private double totalPrice;
 
     @PersistenceConstructor
-    public Cart(String userId, List<CartItem> items, double totalPrice) {
+    public Cart(String id, String userId, List<CartItem> items, double totalPrice) {
+        this.id = id;
         this.userId = userId;
         this.items = items;
         this.totalPrice = totalPrice;
@@ -34,11 +35,15 @@ public class Cart {
         return id;
     }
 
-    public String getUser_id() {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
         return userId;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -56,5 +61,15 @@ public class Cart {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", items=" + items +
+                ", totalPrice=" + totalPrice +
+                '}';
     }
 }

@@ -57,16 +57,16 @@ public class ProductService {
         repository.deleteById(id);
     }
 
-    public List<String> getAllMajorTypes() {
+    public List<String> getAllGroups() {
         return template.query(Product.class)
-                .distinct("details.major_type")
+                .distinct("group")
                 .as(String.class)
                 .all();
     }
 
-    public List<String> getAllMinorTypes() {
+    public List<String> getAllTypes() {
         return template.query(Product.class)
-                .distinct("details.minor_type")
+                .distinct("details.type")
                 .as(String.class)
                 .all();
     }
