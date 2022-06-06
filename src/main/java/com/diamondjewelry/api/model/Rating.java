@@ -4,14 +4,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Document("ratings")
 public class Rating {
     @Id
     private String id;
-    @Field("user_id")
+    @Field(name = "user_id", targetType = FieldType.OBJECT_ID)
     private String userId;
-    @Field("product_id")
+    @Field(name = "product_id", targetType = FieldType.OBJECT_ID)
     private String productId;
     @Field("rating_star")
     private float ratingStar;

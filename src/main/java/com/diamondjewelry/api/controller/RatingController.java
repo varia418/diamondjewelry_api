@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/v1/rating")
+@RequestMapping("api/v1/ratings")
 public class RatingController {
     @Autowired
     private RatingService service;

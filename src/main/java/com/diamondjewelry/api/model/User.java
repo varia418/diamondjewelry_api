@@ -1,10 +1,10 @@
 package com.diamondjewelry.api.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.util.List;
 
@@ -20,25 +20,25 @@ public class User {
     private String tel;
     @Field("email")
     private String email;
-    @Field("address")
-    private List<String> address;
+    @Field("addresses")
+    private List<String> addresses;
     @Field("password")
     private String password;
-    @Field(name = "favorite_products", targetType = FieldType.OBJECT_ID)
-    private List<String> favoriteProducts;
+    @Field("favorite_products")
+    private List<ObjectId> favoriteProducts;
     @Field("role")
     private String role;
     @Field("provider")
     private String provider;
 
     @PersistenceConstructor
-    public User(String id, String fullName, String dob, String tel, String email, List<String> address, String password, List<String> favoriteProducts, String role, String provider) {
+    public User(String id, String fullName, String dob, String tel, String email, List<String> addresses, String password, List<ObjectId> favoriteProducts, String role, String provider) {
         this.id = id;
         this.fullName = fullName;
         this.dob = dob;
         this.tel = tel;
         this.email = email;
-        this.address = address;
+        this.addresses = addresses;
         this.password = password;
         this.favoriteProducts = favoriteProducts;
         this.role = role;
@@ -85,12 +85,12 @@ public class User {
         this.email = email;
     }
 
-    public List<String> getAddress() {
-        return address;
+    public List<String> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(List<String> address) {
-        this.address = address;
+    public void setAddresses(List<String> addresses) {
+        this.addresses = addresses;
     }
 
     public String getPassword() {
@@ -101,11 +101,11 @@ public class User {
         this.password = password;
     }
 
-    public List<String> getFavoriteProducts() {
+    public List<ObjectId> getFavoriteProducts() {
         return favoriteProducts;
     }
 
-    public void setFavoriteProducts(List<String> favoriteProducts) {
+    public void setFavoriteProducts(List<ObjectId> favoriteProducts) {
         this.favoriteProducts = favoriteProducts;
     }
 
@@ -133,7 +133,7 @@ public class User {
                 ", dob='" + dob + '\'' +
                 ", tel='" + tel + '\'' +
                 ", email='" + email + '\'' +
-                ", address=" + address +
+                ", addresses=" + addresses +
                 ", password='" + password + '\'' +
                 ", favoriteProducts=" + favoriteProducts +
                 ", role='" + role + '\'' +

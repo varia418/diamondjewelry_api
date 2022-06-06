@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/v1/cart")
+@RequestMapping("api/v1/carts")
 public class CartController {
     @Autowired
     private CartService service;

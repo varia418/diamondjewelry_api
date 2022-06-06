@@ -2,14 +2,12 @@ package com.diamondjewelry.api.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CartItem {
     @Field(name = "product_id", targetType = FieldType.OBJECT_ID)
-    @Indexed(unique = true)
     private String id;
 
     @Field("quantity")

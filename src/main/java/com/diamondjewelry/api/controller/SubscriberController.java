@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/v1/subscriber")
+@RequestMapping("api/v1/subscribers")
 public class SubscriberController {
     @Autowired
     private SubscriberService service;
