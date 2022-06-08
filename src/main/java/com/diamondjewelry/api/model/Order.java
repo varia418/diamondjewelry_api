@@ -20,6 +20,8 @@ public class Order {
     private List<CartItem> items;
     @Field("address")
     private String address;
+    @Field("status")
+    private String status;
     @Field("VAT_fee")
     private double VATFee;
     @Field("total_cost")
@@ -28,11 +30,12 @@ public class Order {
     private String createdAt;
 
     @PersistenceConstructor
-    public Order(String id, String userId, List<CartItem> items, String address, double VATFee, double totalCost, String createdAt) {
+    public Order(String id, String userId, List<CartItem> items, String address, String status, double VATFee, double totalCost, String createdAt) {
         this.id = id;
         this.userId = userId;
         this.items = items;
         this.address = address;
+        this.status = status;
         this.VATFee = VATFee;
         this.totalCost = totalCost;
         this.createdAt = createdAt;
@@ -68,6 +71,14 @@ public class Order {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public double getVATFee() {

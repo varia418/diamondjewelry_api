@@ -1,6 +1,5 @@
 package com.diamondjewelry.api.service;
 
-import com.diamondjewelry.api.model.Product;
 import com.diamondjewelry.api.model.User;
 import com.diamondjewelry.api.repository.UserRepository;
 import org.bson.Document;
@@ -13,9 +12,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -34,8 +33,9 @@ public class UserService {
     }
 
     public void addUser(User user) {
-        user.setRole("USER");
-        user.setProvider("LOCAL");
+        if (user.getAddresses() == null) {
+            user.setAddresses(new ArrayList<>());
+        }
         repository.insert(user);
     }
 
@@ -78,14 +78,15 @@ public class UserService {
         }
     }
 
-    public List<Product> getLikedProductsByUserId(String id) {
+    public List<?> getLikedProductsByUserId(String id) {
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("products")
                 .localField("favorite_products")
                 .foreignField("_id")
                 .as("liked_products");
         Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("_id").is(new ObjectId(id))), lookupOperation);
-        return (List<Product>)((Document)(template.aggregate(aggregation, "users", Object.class).getRawResults().get("results", List.class).get(0))).get("liked_products");
+        List<Document> likedProductsDoc = ((Document)(template.aggregate(aggregation, "users", Object.class).getRawResults().get("results", List.class).get(0))).getList("liked_products", Document.class);
+        return likedProductsDoc.stream().map(likedProductDoc -> (Object)likedProductDoc).collect(Collectors.toList());
     }
 
     public void addLikedProduct(String id, String productId) {
@@ -120,5 +121,13 @@ public class UserService {
             user.setFavoriteProducts(new ArrayList<>());
             repository.save(user);
         }
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
+    public boolean existsUserByEmail(String email) {
+        return repository.existsByEmail(email);
     }
 }

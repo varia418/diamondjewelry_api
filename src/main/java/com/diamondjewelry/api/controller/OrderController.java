@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
 @RequestMapping("api/v1/orders")
 public class OrderController {
     @Autowired
@@ -54,5 +53,15 @@ public class OrderController {
         }
         service.removeOrderById(id);
         return new ResponseEntity<>(order.get(), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/updateStatus/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable("id") String id, @RequestBody String status) {
+        Optional<Order> order = service.getOrderById(id);
+        if (!order.isPresent()) {
+            return new ResponseEntity<>("Order is not found.", HttpStatus.NOT_FOUND);
+        }
+        service.updateStatus(id, status);
+        return new ResponseEntity<>("update status of order " + id + " to " + status + " successfully", HttpStatus.OK);
     }
 }

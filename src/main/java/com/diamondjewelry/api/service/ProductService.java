@@ -38,7 +38,12 @@ public class ProductService {
         Query query = new Query();
         for (Map.Entry<String, String> entry : params.entrySet()) {
             if (entry.getValue() != null) {
-                query.addCriteria(Criteria.where("details." + entry.getKey()).is(entry.getValue()));
+                if (entry.getKey().equals("group")) {
+                    query.addCriteria(Criteria.where(entry.getKey()).is(entry.getValue()));
+                }
+                else {
+                    query.addCriteria(Criteria.where("details." + entry.getKey()).is(entry.getValue()));
+                }
             }
         }
         return template.find(query, Product.class);
@@ -70,7 +75,4 @@ public class ProductService {
                 .as(String.class)
                 .all();
     }
-
-
-
 }

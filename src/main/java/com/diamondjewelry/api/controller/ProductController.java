@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/v1/products")
 public class ProductController {
     @Autowired
@@ -37,7 +36,7 @@ public class ProductController {
         return new ResponseEntity<>(service.getProductBySearchTitleKeyword(titleKeyword), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/details")
+    @RequestMapping(method = RequestMethod.GET, value = "/filters")
     public ResponseEntity<List<Product>> getProduct(
             @RequestParam(name = "brand", required = false) String brand,
             @RequestParam(name = "material", required = false) String material,
@@ -45,8 +44,8 @@ public class ProductController {
             @RequestParam(name = "purity", required = false) String purity,
             @RequestParam(name = "gender", required = false) String gender,
             @RequestParam(name = "color", required = false) String color,
-            @RequestParam(name = "majorType", required = false) String majorType,
-            @RequestParam(name = "minorType", required = false) String minorType) {
+            @RequestParam(name = "group", required = false) String group,
+            @RequestParam(name = "type", required = false) String type) {
         Map<String, String> params = new HashMap<>();
         params.put("brand", brand);
         params.put("material", material);
@@ -54,8 +53,8 @@ public class ProductController {
         params.put("purity", purity);
         params.put("gender", gender);
         params.put("color", color);
-        params.put("major_type", majorType);
-        params.put("minor_type", minorType);
+        params.put("group", group);
+        params.put("type", type);
         return new ResponseEntity<>(service.getProduct(params), HttpStatus.OK);
     }
 

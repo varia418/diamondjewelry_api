@@ -2,7 +2,6 @@ package com.diamondjewelry.api.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -18,17 +17,13 @@ public class Cart {
     @Indexed(unique = true)
     private String userId;
     @Field("items")
-    @Reference
     private List<CartItem> items;
-    @Field("total_price")
-    private double totalPrice;
 
     @PersistenceConstructor
-    public Cart(String id, String userId, List<CartItem> items, double totalPrice) {
+    public Cart(String id, String userId, List<CartItem> items) {
         this.id = id;
         this.userId = userId;
         this.items = items;
-        this.totalPrice = totalPrice;
     }
 
     public String getId() {
@@ -55,21 +50,12 @@ public class Cart {
         this.items = items;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     @Override
     public String toString() {
         return "Cart{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", items=" + items +
-                ", totalPrice=" + totalPrice +
                 '}';
     }
 }

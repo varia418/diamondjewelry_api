@@ -3,19 +3,26 @@ package com.diamondjewelry.api.controller;
 import com.diamondjewelry.api.model.User;
 import com.diamondjewelry.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
 @RequestMapping("api/v1/users")
 public class UserController {
     @Autowired
     private UserService service;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers() {
@@ -32,12 +39,14 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<User> createNewUser(@RequestBody User user) {
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
         service.addUser(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(@RequestBody User user) {
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
         if (!service.getUserById(user.getId()).isPresent()) {
             service.addUser(user);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
