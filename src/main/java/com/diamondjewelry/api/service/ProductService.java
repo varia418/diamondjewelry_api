@@ -3,6 +3,7 @@ package com.diamondjewelry.api.service;
 import com.diamondjewelry.api.model.Product;
 import com.diamondjewelry.api.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -34,7 +35,7 @@ public class ProductService {
         return repository.findByTitleIgnoreCaseLike(titleKeyword);
     }
 
-    public List<Product> getProduct(Map<String, String> params) {
+    public List<Product> getProduct(Map<String, String> params, String sortMode) {
         Query query = new Query();
         for (Map.Entry<String, String> entry : params.entrySet()) {
             if (entry.getValue() != null) {
@@ -45,6 +46,19 @@ public class ProductService {
                     query.addCriteria(Criteria.where("details." + entry.getKey()).is(entry.getValue()));
                 }
             }
+        }
+        switch (sortMode) {
+            case "oldest":
+                query.with(Sort.by(Sort.Direction.ASC, "_id"));
+                break;
+            case "latest":
+                query.with(Sort.by(Sort.Direction.DESC, "_id"));
+                break;
+            case "mostPopular":
+                query.with(Sort.by(Sort.Direction.DESC, "sold"));
+                break;
+            default:
+                break;
         }
         return template.find(query, Product.class);
     }

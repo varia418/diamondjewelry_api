@@ -32,13 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors();
     }
 
-/*
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/", "/swagger-ui/**", "/v3/api-docs/**");
-    }
-*/
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

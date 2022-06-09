@@ -1,5 +1,6 @@
 package com.diamondjewelry.api.service;
 
+import com.diamondjewelry.api.model.Product;
 import com.diamondjewelry.api.model.User;
 import com.diamondjewelry.api.repository.UserRepository;
 import org.bson.Document;
@@ -35,6 +36,9 @@ public class UserService {
     public void addUser(User user) {
         if (user.getAddresses() == null) {
             user.setAddresses(new ArrayList<>());
+        }
+        if (user.getFavoriteProducts() == null) {
+            user.setFavoriteProducts(new ArrayList<>());
         }
         repository.insert(user);
     }
@@ -114,7 +118,7 @@ public class UserService {
         }
     }
 
-    public void removeAllLikedProduct(String id) {
+    public void removeAllLikedProducts(String id) {
         Optional<User> userOptional = repository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -123,11 +127,20 @@ public class UserService {
         }
     }
 
-    public Optional<User> findUserByEmail(String email) {
-        return repository.findByEmail(email);
+    public boolean existsLikedProduct(String id, String productId) {
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user.getFavoriteProducts().contains(new ObjectId(productId));
+        }
+        return false;
     }
 
-    public boolean existsUserByEmail(String email) {
-        return repository.existsByEmail(email);
+    public Optional<User> findUserByEmailAndRole(String email, String role) {
+        return repository.findByEmailAndRole(email, role);
+    }
+
+    public boolean existsUserByEmailAndRole(String email, String role) {
+        return repository.existsByEmailAndRole(email, role);
     }
 }

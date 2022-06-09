@@ -95,23 +95,23 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/addLikedProduct/{id}")
-    public ResponseEntity<?> addLikedProduct(@PathVariable("id") String id, @RequestBody String likedProduct) {
+    public ResponseEntity<?> addLikedProduct(@PathVariable("id") String id, @RequestBody String productId) {
         Optional<User> user = service.getUserById(id);
         if (!user.isPresent()) {
             return new ResponseEntity<>("User is not found.", HttpStatus.NOT_FOUND);
         }
-        service.addLikedProduct(id, likedProduct);
-        return new ResponseEntity<>("add product " + likedProduct + " to favorite successfully!", HttpStatus.OK);
+        service.addLikedProduct(id, productId);
+        return new ResponseEntity<>("add product " + productId + " to favorite successfully!", HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/removeLikedProduct/{id}")
-    public ResponseEntity<?> removeLikedProduct(@PathVariable("id") String id, @RequestBody String likedProduct) {
+    public ResponseEntity<?> removeLikedProduct(@PathVariable("id") String id, @RequestBody String productId) {
         Optional<User> user = service.getUserById(id);
         if (!user.isPresent()) {
             return new ResponseEntity<>("User is not found.", HttpStatus.NOT_FOUND);
         }
-        service.removeLikedProduct(id, likedProduct);
-        return new ResponseEntity<>("remove product " + likedProduct + " from favorite successfully!", HttpStatus.OK);
+        service.removeLikedProduct(id, productId);
+        return new ResponseEntity<>("remove product " + productId + " from favorite successfully!", HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/removeAllLikedProduct/{id}")
@@ -120,7 +120,16 @@ public class UserController {
         if (!user.isPresent()) {
             return new ResponseEntity<>("User is not found.", HttpStatus.NOT_FOUND);
         }
-        service.removeAllLikedProduct(id);
+        service.removeAllLikedProducts(id);
         return new ResponseEntity<>("remove all products from favorite successfully!", HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/existsLikedProduct/{id}")
+    public ResponseEntity<?> existsLikedProduct(@PathVariable("id") String id, @RequestBody String productId) {
+        Optional<User> user = service.getUserById(id);
+        if (!user.isPresent()) {
+            return new ResponseEntity<>("User is not found.", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(service.existsLikedProduct(id, productId), HttpStatus.OK);
     }
 }

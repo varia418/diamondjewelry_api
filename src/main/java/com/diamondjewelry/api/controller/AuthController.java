@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping(value = "api/v1/auth")
 public class AuthController {
     @Autowired
     private UserService service;
@@ -36,37 +37,33 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/signin/user")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
-        Optional<User> userOptional = service.findUserByEmail(loginDto.getEmail());
+        Optional<User> userOptional = service.findUserByEmailAndRole(loginDto.getEmail(), "USER");
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (user.getRole().equals("USER")) {
-                if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
-                    return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
-                }
-                return new ResponseEntity<>("Wrong password.", HttpStatus.BAD_REQUEST);
+            if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
+                return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
             }
+            return new ResponseEntity<>("Wrong password.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("User don't exists.", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signin/admin")
     public ResponseEntity<?> authenticateAdmin(@RequestBody LoginDto loginDto) {
-        Optional<User> userOptional = service.findUserByEmail(loginDto.getEmail());
+        Optional<User> userOptional = service.findUserByEmailAndRole(loginDto.getEmail(), "ADMIN");
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (user.getRole().equals("ADMIN")) {
-                if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
-                    return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
-                }
-                return new ResponseEntity<>("Wrong password.", HttpStatus.BAD_REQUEST);
+            if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
+                return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
             }
+            return new ResponseEntity<>("Wrong password.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("User don't exists.", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        if (service.existsUserByEmail(user.getEmail())) {
+        if (service.existsUserByEmailAndRole(user.getEmail(), user.getRole())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));

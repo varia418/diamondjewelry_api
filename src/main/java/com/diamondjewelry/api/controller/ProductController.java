@@ -4,24 +4,21 @@ import com.diamondjewelry.api.model.Product;
 import com.diamondjewelry.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping(value = "/api/v1/products", consumes = MediaType.ALL_VALUE)
 public class ProductController {
     @Autowired
     private ProductService service;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return new ResponseEntity<>(service.getAllProducts(), HttpStatus.OK);
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<?> getProductById(@PathVariable("id") String id) {
@@ -36,8 +33,8 @@ public class ProductController {
         return new ResponseEntity<>(service.getProductBySearchTitleKeyword(titleKeyword), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/filters")
-    public ResponseEntity<List<Product>> getProduct(
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> getProduct(
             @RequestParam(name = "brand", required = false) String brand,
             @RequestParam(name = "material", required = false) String material,
             @RequestParam(name = "chainMaterial", required = false) String chainMaterial,
@@ -45,7 +42,8 @@ public class ProductController {
             @RequestParam(name = "gender", required = false) String gender,
             @RequestParam(name = "color", required = false) String color,
             @RequestParam(name = "group", required = false) String group,
-            @RequestParam(name = "type", required = false) String type) {
+            @RequestParam(name = "type", required = false) String type,
+            @RequestParam(name = "sortMode", required = false, defaultValue = "oldest") String sortMode) {
         Map<String, String> params = new HashMap<>();
         params.put("brand", brand);
         params.put("material", material);
@@ -55,7 +53,10 @@ public class ProductController {
         params.put("color", color);
         params.put("group", group);
         params.put("type", type);
-        return new ResponseEntity<>(service.getProduct(params), HttpStatus.OK);
+        if (!sortMode.equals("oldest") && !sortMode.equals("latest") && !sortMode.equals("mostPopular")) {
+            return new ResponseEntity<>("Invalid sorting mode", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(service.getProduct(params, sortMode), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
