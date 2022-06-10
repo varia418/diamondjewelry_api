@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,13 +84,12 @@ public class ProductController {
         return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/group")
-    public ResponseEntity<List<String>> getAllGroup() {
-        return new ResponseEntity<>(service.getAllGroups(), HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/type")
-    public ResponseEntity<List<String>> getAllMinorTypes() {
-        return new ResponseEntity<>(service.getAllTypes(), HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.GET, value = "/filter/{filter}")
+    public ResponseEntity<?> getAllValuesOfFilter(String filter) {
+        if (!filter.equals("brand") && !filter.equals("material") && !filter.equals("chain_material")
+            && !filter.equals("purity") && !filter.equals("gender") && !filter.equals("color") && !filter.equals("type")) {
+            return new ResponseEntity<>("Invalid filter", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(service.getAllValuesOfFilter(filter), HttpStatus.OK);
     }
 }

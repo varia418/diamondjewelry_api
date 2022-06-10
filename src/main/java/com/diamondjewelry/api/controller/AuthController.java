@@ -43,9 +43,9 @@ public class AuthController {
             if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
                 return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
             }
-            return new ResponseEntity<>("Wrong password.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Sai mật khẩu", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("User don't exists.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Tài khoản không tồn tại", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signin/admin")
@@ -56,15 +56,15 @@ public class AuthController {
             if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
                 return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
             }
-            return new ResponseEntity<>("Wrong password.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Sai mật khẩu!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("User don't exists.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Tài khoản không tồn tại!", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         if (service.existsUserByEmailAndRole(user.getEmail(), user.getRole())) {
-            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email này đã tồn tại trong hệ thống!", HttpStatus.BAD_REQUEST);
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         service.addUser(user);

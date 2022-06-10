@@ -76,16 +76,9 @@ public class ProductService {
         repository.deleteById(id);
     }
 
-    public List<String> getAllGroups() {
+    public List<String> getAllValuesOfFilter(String filter) {
         return template.query(Product.class)
-                .distinct("group")
-                .as(String.class)
-                .all();
-    }
-
-    public List<String> getAllTypes() {
-        return template.query(Product.class)
-                .distinct("details.type")
+                .distinct("details." + filter)
                 .as(String.class)
                 .all();
     }
