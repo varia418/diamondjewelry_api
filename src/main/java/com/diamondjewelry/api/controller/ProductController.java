@@ -85,7 +85,7 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/filter/{filter}")
-    public ResponseEntity<?> getAllValuesOfFilter(String filter) {
+    public ResponseEntity<?> getAllValuesOfFilter(@PathVariable("filter") String filter) {
         if (!filter.equals("brand") && !filter.equals("material") && !filter.equals("chain_material")
             && !filter.equals("purity") && !filter.equals("gender") && !filter.equals("color") && !filter.equals("type")) {
             return new ResponseEntity<>("Invalid filter", HttpStatus.BAD_REQUEST);
