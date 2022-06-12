@@ -30,7 +30,7 @@ public class RatingController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/productId")
-    public ResponseEntity<List<Rating>> getRatingByProductId(@RequestParam("productId") String productId) {
+    public ResponseEntity<?> getRatingByProductId(@RequestParam("productId") String productId) {
         return new ResponseEntity<>(service.getRatingsByProductId(productId), HttpStatus.OK);
     }
 
