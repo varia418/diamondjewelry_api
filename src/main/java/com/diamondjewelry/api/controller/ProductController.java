@@ -42,7 +42,8 @@ public class ProductController {
             @RequestParam(name = "color", required = false) String color,
             @RequestParam(name = "group", required = false) String group,
             @RequestParam(name = "type", required = false) String type,
-            @RequestParam(name = "sortMode", required = false, defaultValue = "oldest") String sortMode) {
+            @RequestParam(name = "sortMode", required = false, defaultValue = "latest") String sortMode,
+            @RequestParam(name = "limit", required = false, defaultValue = "0") int limit) {
         Map<String, String> params = new HashMap<>();
         params.put("brand", brand);
         params.put("material", material);
@@ -55,7 +56,10 @@ public class ProductController {
         if (!sortMode.equals("oldest") && !sortMode.equals("latest") && !sortMode.equals("mostPopular")) {
             return new ResponseEntity<>("Invalid sorting mode", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(service.getProduct(params, sortMode), HttpStatus.OK);
+        if (limit < 0) {
+            return new ResponseEntity<>("Invalid limit: less than 0", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(service.getProduct(params, sortMode, limit), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

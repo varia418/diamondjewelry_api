@@ -35,7 +35,7 @@ public class ProductService {
         return repository.findByTitleIgnoreCaseLike(titleKeyword);
     }
 
-    public List<Product> getProduct(Map<String, String> params, String sortMode) {
+    public List<Product> getProduct(Map<String, String> params, String sortMode, int limit) {
         Query query = new Query();
         for (Map.Entry<String, String> entry : params.entrySet()) {
             if (entry.getValue() != null) {
@@ -59,6 +59,9 @@ public class ProductService {
                 break;
             default:
                 break;
+        }
+        if (limit != 0) {
+            query.limit(limit);
         }
         return template.find(query, Product.class);
     }

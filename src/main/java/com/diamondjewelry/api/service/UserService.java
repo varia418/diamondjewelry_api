@@ -90,6 +90,10 @@ public class UserService {
                 .as("liked_products");
         Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("_id").is(new ObjectId(id))), lookupOperation);
         List<Document> likedProductsDoc = ((Document)(template.aggregate(aggregation, "users", Object.class).getRawResults().get("results", List.class).get(0))).getList("liked_products", Document.class);
+        likedProductsDoc.forEach(likeProductDoc -> {
+            likeProductDoc.append("id", likeProductDoc.get("_id", ObjectId.class).toHexString());
+            likeProductDoc.remove("_id");
+        });
         return likedProductsDoc.stream().map(likedProductDoc -> (Object)likedProductDoc).collect(Collectors.toList());
     }
 

@@ -109,7 +109,10 @@ public class CartService {
                  }
              });
         });
-        System.out.println(cartProductsDoc);
+        cartProductsDoc.forEach(cartProductDoc -> {
+            cartProductDoc.append("id", cartProductDoc.get("_id", ObjectId.class).toHexString());
+            cartProductDoc.remove("_id");
+        });
         return cartProductsDoc.stream().map(cartProductDoc -> (Object)cartProductDoc).collect(Collectors.toList());
     }
 }

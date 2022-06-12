@@ -21,7 +21,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/auth/**", "/api/v1/contacts", "api/v1/subscribers").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                 .antMatchers("/", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

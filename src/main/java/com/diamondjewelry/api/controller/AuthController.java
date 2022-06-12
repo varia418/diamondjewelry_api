@@ -2,13 +2,13 @@ package com.diamondjewelry.api.controller;
 
 import com.diamondjewelry.api.model.User;
 import com.diamondjewelry.api.payload.LoginDto;
+import com.diamondjewelry.api.payload.LoginRes;
 import com.diamondjewelry.api.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -41,7 +41,7 @@ public class AuthController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
-                return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
+                return new ResponseEntity<>(new LoginRes(user.getId(), getJWTToken(user)), HttpStatus.OK);
             }
             return new ResponseEntity<>("Sai mật khẩu", HttpStatus.BAD_REQUEST);
         }
@@ -54,7 +54,7 @@ public class AuthController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
-                return new ResponseEntity<>(getJWTToken(user), HttpStatus.OK);
+                return new ResponseEntity<>(new LoginRes(user.getId(), getJWTToken(user)), HttpStatus.OK);
             }
             return new ResponseEntity<>("Sai mật khẩu!", HttpStatus.BAD_REQUEST);
         }
@@ -85,7 +85,7 @@ public class AuthController {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 604800))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
     }

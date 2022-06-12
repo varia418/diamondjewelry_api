@@ -58,10 +58,6 @@ public class CartController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/addItem/{userId}")
     public ResponseEntity<?> addItemToCart(@PathVariable("userId") String userId, @RequestBody CartItem item) {
-        Optional<Cart> cart = service.getCartByUserId(userId);
-        if (!cart.isPresent()) {
-            return new ResponseEntity<>("Cart is not found.", HttpStatus.NOT_FOUND);
-        }
         service.addItemToCart(userId, item);
         return new ResponseEntity<>("add item " + item.getId() + " successfully", HttpStatus.OK);
     }
