@@ -34,9 +34,6 @@ public class UserService {
     }
 
     public void addUser(User user) {
-        if (user.getAddresses() == null) {
-            user.setAddresses(new ArrayList<>());
-        }
         if (user.getFavoriteProducts() == null) {
             user.setFavoriteProducts(new ArrayList<>());
         }
@@ -44,42 +41,17 @@ public class UserService {
     }
 
     public void updateUser(User user) {
-        if (user.getAddresses() == null) {
-            user.setAddresses(repository.findById(user.getId()).get().getAddresses());
-        }
         if (user.getFavoriteProducts() == null) {
             user.setFavoriteProducts(repository.findById(user.getId()).get().getFavoriteProducts());
+        }
+        if (user.getProvider().equals("LOCAL")) {
+            user.setPassword(repository.findById(user.getId()).get().getPassword());
         }
         repository.save(user);
     }
 
     public void removeUserById(String id) {
         repository.deleteById(id);
-    }
-
-    public void addAddress(String id, String address) {
-        Optional<User> userOptional = repository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<String> addresses = user.getAddresses();
-            if (addresses == null) {
-                addresses = new ArrayList<>();
-            }
-            addresses.add(address);
-            user.setAddresses(addresses);
-            repository.save(user);
-        }
-    }
-
-    public void removeAddress(String id, int index) {
-        Optional<User> userOptional = repository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<String> addresses = user.getAddresses();
-            addresses.remove(index);
-            user.setAddresses(addresses);
-            repository.save(user);
-        }
     }
 
     public List<?> getLikedProductsByUserId(String id) {
@@ -140,11 +112,11 @@ public class UserService {
         return false;
     }
 
-    public Optional<User> findUserByEmailAndRole(String email, String role) {
-        return repository.findByEmailAndRole(email, role);
+    public Optional<User> findUserByEmailAndRoleAndProvider(String email, String role, String provider) {
+        return repository.findByEmailAndRoleAndProvider(email, role, provider);
     }
 
-    public boolean existsUserByEmailAndRole(String email, String role) {
-        return repository.existsByEmailAndRole(email, role);
+    public boolean existsUserByEmailAndRoleAndProvider(String email, String role, String provider) {
+        return repository.existsByEmailAndRoleAndProvider(email, role, provider);
     }
 }

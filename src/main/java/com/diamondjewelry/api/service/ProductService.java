@@ -27,6 +27,13 @@ public class ProductService {
         return repository.findAll();
     }
 
+    public List<String> getAllTitles() {
+        return template.query(Product.class)
+                .distinct("title")
+                .as(String.class)
+                .all();
+    }
+
     public Optional<Product> getProductById(String id) {
         return repository.findById(id);
     }

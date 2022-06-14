@@ -96,4 +96,9 @@ public class ProductController {
         }
         return new ResponseEntity<>(service.getAllValuesOfFilter(filter), HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/titles")
+    public ResponseEntity<List<String>> getAllTitles() {
+        return new ResponseEntity<>(service.getAllTitles(), HttpStatus.OK);
+    }
 }

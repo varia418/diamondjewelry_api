@@ -20,8 +20,8 @@ public class User {
     private String tel;
     @Field("email")
     private String email;
-    @Field("addresses")
-    private List<String> addresses;
+    @Field("address")
+    private String address;
     @Field("password")
     private String password;
     @Field("favorite_products")
@@ -32,13 +32,13 @@ public class User {
     private String provider;
 
     @PersistenceConstructor
-    public User(String id, String fullName, String dob, String tel, String email, List<String> addresses, String password, List<ObjectId> favoriteProducts, String role, String provider) {
+    public User(String id, String fullName, String dob, String tel, String email, String address, String password, List<ObjectId> favoriteProducts, String role, String provider) {
         this.id = id;
         this.fullName = fullName;
         this.dob = dob;
         this.tel = tel;
         this.email = email;
-        this.addresses = addresses;
+        this.address = address;
         this.password = password;
         this.favoriteProducts = favoriteProducts;
         this.role = role;
@@ -85,12 +85,12 @@ public class User {
         this.email = email;
     }
 
-    public List<String> getAddresses() {
-        return addresses;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<String> addresses) {
-        this.addresses = addresses;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPassword() {
@@ -133,7 +133,7 @@ public class User {
                 ", dob='" + dob + '\'' +
                 ", tel='" + tel + '\'' +
                 ", email='" + email + '\'' +
-                ", addresses=" + addresses +
+                ", address=" + address +
                 ", password='" + password + '\'' +
                 ", favoriteProducts=" + favoriteProducts +
                 ", role='" + role + '\'' +

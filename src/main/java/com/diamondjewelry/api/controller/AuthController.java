@@ -37,7 +37,7 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/signin/user")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
-        Optional<User> userOptional = service.findUserByEmailAndRole(loginDto.getEmail(), "USER");
+        Optional<User> userOptional = service.findUserByEmailAndRoleAndProvider(loginDto.getEmail(), "USER", "LOCAL");
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
@@ -48,9 +48,19 @@ public class AuthController {
         return new ResponseEntity<>("Tài khoản không tồn tại", HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/signin/oauth2")
+    public ResponseEntity<?> authenticatedOauth2(@RequestBody User user) {
+        Optional<User> userOptional = service.findUserByEmailAndRoleAndProvider(user.getEmail(), user.getRole(), user.getProvider());
+        if (userOptional.isPresent()) {
+            return new ResponseEntity<>(new LoginRes(userOptional.get().getId(), getJWTToken(userOptional.get())), HttpStatus.OK);
+        }
+        service.addUser(user);
+        return new ResponseEntity<>(new LoginRes(user.getId(), getJWTToken(user)), HttpStatus.CREATED);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/signin/admin")
     public ResponseEntity<?> authenticateAdmin(@RequestBody LoginDto loginDto) {
-        Optional<User> userOptional = service.findUserByEmailAndRole(loginDto.getEmail(), "ADMIN");
+        Optional<User> userOptional = service.findUserByEmailAndRoleAndProvider(loginDto.getEmail(), "ADMIN", "LOCAL");
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
@@ -63,12 +73,12 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        if (service.existsUserByEmailAndRole(user.getEmail(), user.getRole())) {
+        if (service.existsUserByEmailAndRoleAndProvider(user.getEmail(), user.getRole(), "LOCAL")) {
             return new ResponseEntity<>("Email này đã tồn tại trong hệ thống!", HttpStatus.BAD_REQUEST);
         }
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         service.addUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     private String getJWTToken(User user) {

@@ -16,7 +16,6 @@ public class Order {
     @Field(name = "user_id", targetType = FieldType.OBJECT_ID)
     private String userId;
     @Field("items")
-    @Reference
     private List<CartItem> items;
     @Field("address")
     private String address;

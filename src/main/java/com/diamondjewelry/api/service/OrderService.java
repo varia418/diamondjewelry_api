@@ -2,6 +2,7 @@ package com.diamondjewelry.api.service;
 
 import com.diamondjewelry.api.model.CartItem;
 import com.diamondjewelry.api.model.Order;
+import com.diamondjewelry.api.model.User;
 import com.diamondjewelry.api.repository.OrderRepository;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -37,6 +38,9 @@ public class OrderService {
     public void addOrder(Order order) {
         order.setCreatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm:ss")));
         order.setStatus("Đang xử lý");
+        if (order.getAddress() == null) {
+            order.setAddress(template.findById(new ObjectId(order.getUserId()), User.class).getAddress());
+        }
         repository.insert(order);
     }
 
